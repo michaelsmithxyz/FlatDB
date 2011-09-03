@@ -89,7 +89,6 @@ public class FlatDB {
                 String k = (String) pairs.getKey();
                 rowString = r.toString();
                 output = k + " " + rowString + "\n";
-                System.out.println("Adding: " + output);
                 out.write(output);
             }
             out.flush();

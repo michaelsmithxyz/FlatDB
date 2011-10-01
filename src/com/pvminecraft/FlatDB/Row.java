@@ -20,10 +20,10 @@ public class Row {
     
     public Row(String key, List<String> row) {
         index = key;
-        values = extractHashMap(row);
+        values = Row.extractHashMap(row);
     }
     
-    public HashMap<String,String> extractHashMap(List<String> row) {
+    public static HashMap<String,String> extractHashMap(List<String> row) {
         HashMap<String,String> map = new HashMap<String, String>();
         String in, val;
         String[] data;

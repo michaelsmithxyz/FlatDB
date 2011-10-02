@@ -1,5 +1,6 @@
 package com.pvminecraft.FlatDB;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Row {
         String in, val;
         String[] data;
         for(String element : row) {
-            data = element.split(":");
+            data = element.split(FlatDB.vSep);
             in = data[0];
             val = data[1];
             map.put(in, val);
@@ -45,6 +46,11 @@ public class Row {
         return values.get(in);
     }
     
+    public void removeElement(String key) {
+        if(values.containsKey(key))
+            values.remove(key);
+    }
+    
     public void addElement(String key, String val) {
         values.put(key, val);
     }
@@ -57,8 +63,21 @@ public class Row {
             Map.Entry pairs = (Map.Entry)it.next();
             String val = (String) pairs.getValue();
             String in = (String) pairs.getKey();
-            ret += in + ":" + val + " ";
+            ret += in + FlatDB.vSep + val + FlatDB.sep;
         }
         return ret;
+    }
+    
+    public static Row fromString(String str) {
+        String[] parts;
+        String key;
+        ArrayList<String> arr = new ArrayList<String>();
+        
+        parts = str.split(FlatDB.sep);
+        key = parts[0];
+        for(int i = 1; i < parts.length; i++) {
+            arr.add(parts[i]);
+        }
+        return new Row(key, arr);
     }
 }

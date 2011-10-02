@@ -1,11 +1,9 @@
 package com.pvminecraft.FlatDB;
 
 import com.pvminecraft.FlatDB.utils.FileManager;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -16,6 +14,9 @@ public class FlatDB {
     private String name;
     private FileManager fm;
     private LinkedHashMap<String,Row> rows;
+    
+    public static String sep = " ";
+    public static String vSep = ":";
     
     public FlatDB(String p, String f) {
         path = p;
@@ -32,19 +33,10 @@ public class FlatDB {
     private void getAllRows() {
         LinkedHashMap<String,Row> table = new LinkedHashMap<String,Row>();
         LinkedList<String> lines = fm.getLines();
-        String[] values;
-        String key;
-        ArrayList<String> row;
-        Row add;
+        Row row;
         for(String line : lines) {
-            values = line.split(" ");
-            key = values[0];
-            row = new ArrayList(values.length - 1);
-            for(int x = 1; x < values.length; x++) {
-                row.add(values[x]);
-            }
-            add = new Row(key, row);
-            table.put(key, add);
+            row = Row.fromString(line);
+            table.put(row.getIndex(), row);
         }
         this.rows = table;
     }
@@ -54,20 +46,19 @@ public class FlatDB {
     }
     
     public void removeRow(String in) {
-        rows.remove(in);
+        if(rows.containsKey(in))
+            rows.remove(in);
     }
     
     public void update() {
         String output;
         String rowString;
-        Iterator it = rows.entrySet().iterator();
+        Set<String> keys = rows.keySet();
         fm.clear();
-        while(it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            Row r = (Row) pairs.getValue();
-            String k = (String) pairs.getKey();
+        for(String key : keys) {
+            Row r = rows.get(key);
             rowString = r.toString();
-            output = k + " " + rowString;
+            output = key + FlatDB.sep + rowString;
             fm.appendLine(output);            
         }
         fm.write();

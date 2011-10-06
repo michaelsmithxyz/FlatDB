@@ -1,8 +1,10 @@
 package com.pvminecraft.FlatDB;
 
 import com.pvminecraft.FlatDB.utils.FileManager;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -62,5 +64,15 @@ public class FlatDB {
             fm.appendLine(output);            
         }
         fm.write();
+    }
+    
+    public List<Row> getAll() {
+        List<Row> ret = new ArrayList<Row>();
+        Set<String> keys = rows.keySet();
+        for(String key : keys) {
+            Row r = rows.get(key);
+            ret.add(r);
+        }
+        return ret;
     }
 }

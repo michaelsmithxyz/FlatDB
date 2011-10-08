@@ -24,6 +24,7 @@ public class FlatDB {
         path = p;
         name = f;
         fm = new FileManager(path, f);
+        fm.createNotExists();
         fm.readLines();
         this.getAllRows();
     }

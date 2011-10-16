@@ -1,6 +1,7 @@
 package com.pvminecraft.FlatDB;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +44,15 @@ public class Row {
     }
     
     public String getElement(String in) {
-        return values.get(in);
+        return values.get(in).replaceAll("|@", " ");
+    }
+    
+    public List<String> getList(String in) {
+        String val = values.get(in);
+        List<String> ret;
+        String[] vals = val.split(",");
+        ret = Arrays.asList(vals);
+        return ret;
     }
     
     public void removeElement(String key) {
@@ -52,7 +61,17 @@ public class Row {
     }
     
     public void addElement(String key, String val) {
+        val = val.replaceAll(" ", "|@");
         values.put(key, val);
+    }
+    
+    public void addList(String key, List<String> val) {
+        String ret;
+        String[] tmp = new String[val.size()];
+        ret = Arrays.toString(val.toArray(tmp));
+        ret = ret.replaceAll("[\\[\\]]", "");
+        ret = ret.replaceAll("[ ]", "");
+        values.put(key, ret);
     }
     
     @Override

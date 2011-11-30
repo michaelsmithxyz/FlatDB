@@ -44,7 +44,7 @@ public class Row {
     }
     
     public String getElement(String in) {
-        return values.get(in).replaceAll("|@", " ");
+        return values.get(in);
     }
     
     public List<String> getList(String in) {
@@ -61,7 +61,6 @@ public class Row {
     }
     
     public void addElement(String key, String val) {
-        val = val.replaceAll(" ", "|@");
         values.put(key, val);
     }
     
@@ -91,7 +90,6 @@ public class Row {
         String[] parts;
         String key;
         ArrayList<String> arr = new ArrayList<String>();
-        
         parts = str.split(FlatDB.sep);
         key = parts[0];
         for(int i = 1; i < parts.length; i++) {

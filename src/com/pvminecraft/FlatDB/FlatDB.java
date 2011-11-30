@@ -20,10 +20,10 @@ public class FlatDB {
     public static String sep = " ";
     public static String vSep = ":";
     
-    public FlatDB(String p, String f) {
-        path = p;
-        name = f;
-        fm = new FileManager(path, f);
+    public FlatDB(String pth, String fle) {
+        path = pth;
+        name = fle;
+        fm = new FileManager(path, fle);
         fm.createNotExists();
         fm.readLines();
         this.getAllRows();
@@ -36,9 +36,13 @@ public class FlatDB {
     private void getAllRows() {
         LinkedHashMap<String,Row> table = new LinkedHashMap<String,Row>();
         LinkedList<String> lines = fm.getLines();
-        Row row;
+        Row row = null;
         for(String line : lines) {
-            row = Row.fromString(line);
+            try {
+                row = Row.fromString(line);
+            } catch(Exception e) {
+                System.err.println("[FlatDB] Error loading row from " + name);
+            }
             table.put(row.getIndex(), row);
         }
         this.rows = table;
@@ -51,6 +55,10 @@ public class FlatDB {
     public void removeRow(String in) {
         if(rows.containsKey(in))
             rows.remove(in);
+    }
+    
+    public void removeAll() {
+        rows.clear();
     }
     
     public void update() {

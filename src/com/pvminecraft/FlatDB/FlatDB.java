@@ -84,4 +84,8 @@ public class FlatDB {
         }
         return ret;
     }
+
+    public boolean hasKey(String key) {
+        return rows.containsKey(key);
+    }
 }
